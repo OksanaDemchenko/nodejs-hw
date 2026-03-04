@@ -45,7 +45,7 @@ export const getNoteById = async (req, res, next) => {
       throw createHttpError(400, 'Invalid ID format');
     }
 
-    const note = await Note.findOne({ _id: noteId, userId: req.user._id }); // 🔒
+    const note = await Note.findOne({ _id: noteId, userId: req.user._id }); 
 
     if (!note) throw createHttpError(404, 'Note not found');
 
@@ -97,10 +97,10 @@ export const deleteNote = async (req, res, next) => {
       throw createHttpError(400, 'Invalid ID format');
     }
 
-    const note = await Note.findOneAndDelete({ _id: noteId, userId: req.user._id }); // 🔒
+    const note = await Note.findOneAndDelete({ _id: noteId, userId: req.user._id });
     if (!note) throw createHttpError(404, 'Note not found');
 
-    res.status(204).end(); 
+    res.status(200).json(note);
   } catch (error) {
     next(error);
   }

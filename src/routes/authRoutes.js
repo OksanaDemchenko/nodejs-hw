@@ -1,21 +1,23 @@
 import express from 'express';
-import { registerUser } from '../controllers/authController.js';
-import { registerUserSchema } from '../validations/authValidation.js';
-import { loginUser } from '../controllers/authController.js';
-import { loginUserSchema } from '../validations/authValidation.js';
 import { celebrate, Segments } from 'celebrate';
+import { registerUser, loginUser, logoutUser, refreshUserSession } from '../controllers/authController.js';
+import { registerUserSchema, loginUserSchema } from '../validations/authValidation.js';
 
 const router = express.Router();
 
 router.post(
-  '/register',
+  '/auth/register',
   celebrate({ [Segments.BODY]: registerUserSchema }),
   registerUser
 );
+
 router.post(
-  '/login',
+  '/auth/login',
   celebrate({ [Segments.BODY]: loginUserSchema }),
   loginUser
 );
+
+router.post('/auth/logout', logoutUser);
+router.post('/auth/refresh', refreshUserSession);
 
 export default router;
