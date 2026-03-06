@@ -1,6 +1,4 @@
-import mongoose from 'mongoose';
-
-const { Schema, model } = mongoose;
+import { Schema, model } from 'mongoose';
 
 const userSchema = new Schema(
   {
@@ -19,17 +17,25 @@ const userSchema = new Schema(
       required: true,
       minlength: 8,
     },
+ 
+    avatar: {
+      type: String,
+      required: false,
+      default: "https://ac.goit.global/fullstack/react/default-avatar.jpg",
+    },
   },
   {
     timestamps: true,
   }
 );
 
+
 userSchema.methods.toJSON = function () {
   const obj = this.toObject();
   delete obj.password;
   return obj;
 };
+
 
 userSchema.pre('save', async function () {
   if (!this.username) {
