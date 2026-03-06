@@ -8,22 +8,22 @@ cloudinary.config({
   secure: true,
 });
 
-export const saveFileToCloudinary = (buffer, userId) => {
+export const saveFileToCloudinary = (buffer) => {
   return new Promise((resolve, reject) => {
     const uploadStream = cloudinary.uploader.upload_stream(
       {
         folder: 'avatars',
         resource_type: 'image',
-        public_id: `avatar_${userId}`, 
-        overwrite: true,
+        use_filename: true,
+        unique_filename: true,
       },
-      (err, result) => {
-        if (err) return reject(err);
+      (error, result) => {
+        if (error) return reject(error);
         resolve(result);
-      }
+      },
     );
 
-    
-    Readable.from(buffer).pipe(uploadStream);
+    const stream = Readable.from(buffer);
+    stream.pipe(uploadStream);
   });
 };

@@ -115,9 +115,14 @@ export const requestResetEmail = async (req, res, next) => {
     const html = template({ name: user.username || user.email, link: resetLink });
 
     try {
-      await sendEmail({ to: email, subject: 'Reset your password', html });
+      await sendEmail({
+        from: process.env.SMTP_FROM,
+        to: email,
+        subject: 'Reset your password',
+        html
+      });
     } catch (error) {
-throw createHttpError(500, 'Failed to send email, please try again later.');
+      throw createHttpError(500, 'Failed to send email, please try again later.');
     }
 
     res.status(200).json({ message: 'Password reset email sent successfully' });
